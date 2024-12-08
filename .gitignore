@@ -23,3 +23,4 @@ yarn-error.log
 /.zed
 .bash_history
 docker/mysql/db_data
+/.composer

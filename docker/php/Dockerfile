@@ -2,7 +2,7 @@
 FROM php:8.3-fpm
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,15 +32,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy the existing application directory contents to the working directory
-COPY ../.. /var/www
-
-# Copy the existing application directory permissions to the working directory
-COPY --chown=www-data:www-data ../.. /var/www
-
-# Change current user to www
-USER www-data
-
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["/bin/sh", "-c", "composer install && php artisan key:generate && php artisan migrate && php-fpm"]

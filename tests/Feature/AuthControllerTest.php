@@ -11,11 +11,11 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
     
-    protected const LOGIN_ROUTE = '/api/v1/auth/login';
+    protected const ROUTE_PREFIX = 'api.v1.';
     
     public function test_login_successful()
     {
-        $user = User::factory()->create([
+        User::factory()->create([
             'email'    => 'test@example.com',
             'password' => Hash::make('password123'),
         ]);
@@ -25,7 +25,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
         ];
         
-        $response = $this->postJson(self::LOGIN_ROUTE, $data);
+        $response = $this->postJson(route(self::ROUTE_PREFIX . 'auth.login'), $data);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -36,7 +36,7 @@ class AuthControllerTest extends TestCase
     
     public function test_login_fails_with_incorrect_password()
     {
-        $user = User::factory()->create([
+        User::factory()->create([
             'email'    => 'test@example.com',
             'password' => Hash::make('password123'),
         ]);
@@ -46,7 +46,7 @@ class AuthControllerTest extends TestCase
             'password' => 'wrongpassword',
         ];
         
-        $response = $this->postJson(self::LOGIN_ROUTE, $data);
+        $response = $this->postJson(route(self::ROUTE_PREFIX . 'auth.login'), $data);
 
         $response->assertStatus(401)
             ->assertJson([
@@ -61,7 +61,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
         ];
         
-        $response = $this->postJson(self::LOGIN_ROUTE, $data);
+        $response = $this->postJson(route(self::ROUTE_PREFIX . 'auth.login'), $data);
 
         $response->assertStatus(422)
             ->assertJsonStructure([

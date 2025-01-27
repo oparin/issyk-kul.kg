@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,7 @@ class AuthController extends BaseController
             'password' => Hash::make($data['password']),
         ]);
 
-        return $this->sendSuccess('Register successfully', $user);
+        return $this->sendSuccess('Registration was successful', UserResource::make($user));
     }
 
     public function login(Request $request)

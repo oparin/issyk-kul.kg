@@ -52,10 +52,7 @@ services:
             - ./docker/mysql/db_data:/var/lib/mysql
             - ./docker/mysql/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
         healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
+            test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
             retries: 5
             timeout: 3s
         networks:

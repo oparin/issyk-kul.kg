@@ -517,7 +517,7 @@
                     "name": "order"
                 }
             },
-            "Success Response": {
+            "SuccessResponse": {
                 "type": "object",
                 "properties": {
                     "message": {
@@ -528,7 +528,7 @@
                     }
                 }
             },
-            "Error Response": {
+            "ErrorResponse": {
                 "type": "object",
                 "properties": {
                     "message": {

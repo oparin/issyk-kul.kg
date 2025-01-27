@@ -1,0 +1,80 @@
+name: ik_kg
+services:
+    app:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        image: ik-app
+        container_name: ik-app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www/app
+        volumes:
+            - .:/var/www/app
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - app-network
+
+    webserver:
+        image: nginx:alpine
+        container_name: ik_webserver
+        restart: unless-stopped
+        ports:
+            - "9000:80"
+        volumes:
+            - .:/var/www/app
+            - ./docker/nginx:/etc/nginx/conf.d/
+        depends_on:
+            - app
+        networks:
+            - app-network
+
+    db:
+        image: mysql:8.0
+        container_name: ik_mysql
+        restart: unless-stopped
+        environment:
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ik
+            MYSQL_USER: ik_user
+            MYSQL_PASSWORD: ik_user_password
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/mysql/db_data:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+            retries: 5
+            timeout: 3s
+        networks:
+            - app-network
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: ik_phpmyadmin
+        restart: always
+        environment:
+            PMA_HOST: db
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "9001:80"
+        depends_on:
+            - db
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

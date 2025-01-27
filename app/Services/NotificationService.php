@@ -2,32 +2,42 @@
 
 namespace App\Services;
 
+use App\Jobs\SendNotificationJob;
 use App\Models\Notification;
-use App\Channels\EmailChannel;
-use App\Channels\SmsChannel;
-use App\Channels\TelegramChannel;
+use App\Models\User;
+use App\Services\NotificationChannels\EmailService;
+use App\Services\NotificationChannels\SmsService;
+use App\Services\NotificationChannels\PushService;
+use App\Services\NotificationChannels\WhatsAppService;
+use App\Services\NotificationChannels\TelegramService;
 
 class NotificationService
 {
-    public function sendNotification(int $userId, string $content, string $channel): void
+    public function sendNotification(User $user, string $content, string $channel): void
     {
         $notification = Notification::query()->create([
-            'user_id' => $userId,
+            'user_id' => $user->id,
             'content' => $content,
             'channel' => $channel,
-            'status' => Notification::STATUS_PENDING,
+            'status'  => Notification::STATUS_PENDING,
         ]);
         
         try {
             switch ($channel) {
                 case 'email':
-                    $this->sendEmail($userId, $content);
+                    $this->sendEmail($user, $content);
                     break;
                 case 'sms':
-                    $this->sendSms($userId, $content);
+                    $this->sendSms($user, $content);
+                    break;
+                case 'push':
+                    $this->sendPush($user, $content);
+                    break;
+                case 'whatsapp':
+                    $this->sendWhatsApp($user, $content);
                     break;
                 case 'telegram':
-                    $this->sendTelegram($userId, $content);
+                    $this->sendTelegram($user, $content);
                     break;
                 default:
                     throw new \Exception("Unsupported notification channel");
@@ -41,23 +51,33 @@ class NotificationService
         $notification->save();
     }
     
-    private function sendEmail(int $userId, string $content): void
+    private function sendEmail(User $user, string $content): void
     {
-        \Mail::to(User::find($userId)->email)->send(new \App\Mail\NotificationMail($content));
+        EmailService::send($user, $content);
     }
     
-    private function sendSms(int $userId, string $content): void
+    private function sendSms(User $user, string $content): void
     {
-        // SmsService::send(User::find($userId)->phone, $content);
+         SmsService::send($user, $content);
     }
     
-    private function sendTelegram(int $userId, string $content): void
+    private function sendPush(User $user, string $content): void
     {
-        // TelegramService::send(User::find($userId)->telegram_id, $content);
+         PushService::send($user, $content);
     }
-
-    public function queueNotification(int $userId, string $content, string $channel): void
+    
+    private function sendWhatsApp(User $user, string $content): void
     {
-        \Queue::push(new \App\Jobs\SendNotificationJob($userId, $content, $channel));
+         WhatsAppService::send($user, $content);
+    }
+    
+    private function sendTelegram(User $user, string $content): void
+    {
+         TelegramService::send($user, $content);
+    }
+    
+    public function queueNotification(User $user, string $content, string $channel): void
+    {
+        SendNotificationJob::dispatch($user, $content, $channel);
     }
 }

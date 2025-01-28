@@ -117,14 +117,19 @@
                         }
                     },
                     "401": {
-                        "description": "The provided credentials are incorrect.",
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "The provided credentials are incorrect."
+                                        },
+                                        "errors": {
+                                            "type": "null",
+                                            "example": null
                                         }
                                     }
                                 }
@@ -338,8 +343,8 @@
                                             "example": "Not found"
                                         },
                                         "errors": {
-                                            "type": "object",
-                                            "properties": {}
+                                            "type": "null",
+                                            "example": null
                                         }
                                     }
                                 }

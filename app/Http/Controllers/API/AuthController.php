@@ -54,7 +54,6 @@ class AuthController extends BaseController
 
         $authToken = $user->createToken($data['email'])->plainTextToken;
 
-
         return $this->sendSuccess('Login successfully', ['token' => $authToken]);
     }
 

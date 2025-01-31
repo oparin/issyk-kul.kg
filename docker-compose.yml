@@ -5,7 +5,7 @@ services:
             context: .
             dockerfile: docker/php/Dockerfile
         image: ik-app
-        container_name: ik-app
+        container_name: ik_app
         restart: unless-stopped
         tty: true
         environment:
@@ -42,7 +42,7 @@ services:
         environment:
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
             MYSQL_DATABASE: ik
             MYSQL_USER: ik_user
             MYSQL_PASSWORD: ik_user_password
@@ -67,7 +67,7 @@ services:
         restart: always
         environment:
             PMA_HOST: db
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
         ports:
             - "9001:80"
         depends_on:

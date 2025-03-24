@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\API\Controllers\AuthController;
+use App\Http\API\Controllers\ListingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\ListingController;
 
 Route::prefix('auth')->group(function () {
     Route::name('auth.')->group(function () {
@@ -16,16 +16,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('listing')->group(function () {
-        Route::name('listing.')->group(function () {
-            Route::controller(ListingController::class)->group(function () {
-                Route::get('/{id}', 'index')->name('index');
-                Route::post('/', 'create')->name('create');
-                Route::put('/{id}', 'update')->name('update');
-                Route::delete('/{id}','delete')->name('delete');
-            });
-        });
-    });
+    Route::apiResource('listing', ListingController::class);
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

@@ -24,3 +24,4 @@ yarn-error.log
 .bash_history
 docker/mysql/db_data
 /.composer
+_ide_helper.php

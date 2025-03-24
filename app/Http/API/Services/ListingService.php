@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\API\Services;
 
 use App\Models\Listing;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ListingService
 {
@@ -20,15 +19,11 @@ class ListingService
         return Listing::query()->create($data);
     }
 
-    public function updateListing(int $listingId, array $data): bool
+    public function updateListing(Listing $listing, array $data): Listing
     {
-        $listing = Listing::query()->find($listingId);
+        $listing->update($data);
 
-        if (!$listing) {
-            return false;
-        }
-
-        return $listing->update($data);
+        return $listing;
     }
 
     public function archiveExpiredListings(): void

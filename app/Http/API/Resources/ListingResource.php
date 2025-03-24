@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\API\Resources;
 
 use App\Models\Listing;
 use Carbon\Carbon;

@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('user_id')->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -18,7 +19,9 @@ return new class extends Migration {
             $table->string('status')->default('moderate');
             $table->dateTime('expires_at');
             $table->integer('views');
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

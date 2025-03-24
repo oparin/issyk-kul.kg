@@ -43,11 +43,11 @@ services:
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
             MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
-            MYSQL_DATABASE: ik
-            MYSQL_USER: ik_user
-            MYSQL_PASSWORD: ik_user_password
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
         ports:
-            - "3306:3306"
+            - '${DOCKER_DB_PORT:-3366}:3306'
         volumes:
             - ./docker/mysql/db_data:/var/lib/mysql
             - ./docker/mysql/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
@@ -63,7 +63,7 @@ services:
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
-        container_name: ik_phpmyadmin
+        container_name: ik_pma
         restart: always
         environment:
             PMA_HOST: db

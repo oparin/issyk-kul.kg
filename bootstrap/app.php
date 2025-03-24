@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Middleware\ForceJson;
+use App\Http\Middleware\HandleModelNotFound;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
+use Illuminatech\MultipartMiddleware\MultipartFormDataParser;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,7 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware('api')
                 ->prefix('api/v1')
                 ->name('api.v1.')
-                ->group(base_path('routes/api_v1.php'));
+                ->group(base_path('app/Http/API/routes.php'));
 //            Route::middleware('api')
 //                ->prefix('api/v2')
 //                ->name('api.v2.')
@@ -22,8 +27,18 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->append(MultipartFormDataParser::class);
+        $middleware->prependToGroup(
+            'api',
+            [ForceJson::class, HandleModelNotFound::class]
+        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Record not found'
+                ], 404);
+            }
+        });
     })->create();

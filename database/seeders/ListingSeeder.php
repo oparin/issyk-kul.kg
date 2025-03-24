@@ -11,12 +11,6 @@ class ListingSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::query()->create([
-            'name' => 'John Doe',
-            'email' => 'V4YD6@example.com',
-            'password' => bcrypt('password'),
-        ]);
-        
         for ($i = 0; $i < 10000; $i++) {
             Listing::query()->create([
                 'title' => 'Listing ' . $i,

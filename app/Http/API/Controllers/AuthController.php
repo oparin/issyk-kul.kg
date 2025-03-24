@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\API\Controllers;
 
-use App\Http\Resources\UserResource;
+use App\Http\API\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

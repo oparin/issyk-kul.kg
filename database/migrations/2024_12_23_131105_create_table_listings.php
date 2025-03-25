@@ -14,11 +14,16 @@ return new class extends Migration {
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('title');
-            $table->text('description');
-            $table->double('price');
+            $table->text('description')->nullable();
+            $table->double('price')->nullable();
+            $table->string('phone')->nullable();
+            $table->boolean('has_whatsapp')->default(false);
+            $table->boolean('has_telegram')->default(false);
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->string('status')->default('moderate');
-            $table->dateTime('expires_at');
-            $table->integer('views');
+            $table->dateTime('expires_at')->nullable();
+            $table->integer('views')->default(0);
 
             $table->timestamps();
             $table->softDeletes();

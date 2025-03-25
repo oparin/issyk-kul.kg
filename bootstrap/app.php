@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\ForceJson;
-use App\Http\Middleware\HandleModelNotFound;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -30,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(MultipartFormDataParser::class);
         $middleware->prependToGroup(
             'api',
-            [ForceJson::class, HandleModelNotFound::class]
+            [ForceJson::class]
         );
     })
     ->withExceptions(function (Exceptions $exceptions) {

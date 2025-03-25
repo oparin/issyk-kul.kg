@@ -12,9 +12,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property double $price
+ * @property string $phone
+ * @property boolean $has_whatsapp
+ * @property boolean $has_telegram
+ * @property string $latitude
+ * @property string $longitude
  * @property string $status
  * @property string $expires_at
  * @property int $views
+ *
+ * @method void increment(string $column, int $amount = 1, array $extra = [])
  */
 class Listing extends Model
 {
@@ -27,9 +34,19 @@ class Listing extends Model
         'title',
         'description',
         'price',
+        'phone',
+        'has_whatsapp',
+        'has_telegram',
+        'latitude',
+        'longitude',
         'status',
         'expires_at',
         'views',
+    ];
+
+    protected $casts = [
+        'has_whatsapp' => 'boolean',
+        'has_telegram' => 'boolean',
     ];
 
     public function user(): BelongsTo

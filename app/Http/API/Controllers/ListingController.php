@@ -36,6 +36,8 @@ class ListingController extends BaseController
 
     public function show(Listing $listing): JsonResponse
     {
+        $listing->increment('views');
+
         return $this->sendSuccess('Resource received', ListingResource::make($listing));
     }
 

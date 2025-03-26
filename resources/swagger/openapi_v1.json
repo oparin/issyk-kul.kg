@@ -39,27 +39,30 @@
                     "auth"
                 ],
                 "summary": "Login",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "User email",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email"
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "User password",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "description": "User's email address",
+                                        "example": "user@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "User's password",
+                                        "example": "password"
+                                    }
+                                }
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Login successfully",
@@ -85,56 +88,7 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "properties": {
-                                                "email": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "password": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid credentials",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "The provided credentials are incorrect."
-                                        },
-                                        "errors": {
-                                            "type": "null",
-                                            "example": null
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/ValidationError"
                     }
                 }
             }
@@ -145,45 +99,42 @@
                     "auth"
                 ],
                 "summary": "Register",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "User name",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "User email",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email"
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "User password",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "password_confirmation",
-                        "in": "query",
-                        "description": "User password confirmation",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email", "password", "password_confirmation"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 191,
+                                        "description": "User's full name",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "description": "User's email address",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6,
+                                        "description": "User's password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "description": "Password confirmation",
+                                        "example": "password123"
+                                    }
+                                }
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Registration was successful",
@@ -193,19 +144,25 @@
                                     "type": "object",
                                     "properties": {
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Registration was successful"
                                         },
                                         "data": {
                                             "type": "object",
                                             "properties": {
                                                 "id": {
-                                                    "type": "integer"
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
                                                 },
                                                 "name": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "example": "John Doe"
                                                 },
                                                 "email": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "user@example.com"
                                                 }
                                             }
                                         }
@@ -215,42 +172,7 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "properties": {
-                                                "name": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "email": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "password": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/ValidationError"
                     }
                 }
             }
@@ -270,9 +192,13 @@
                                     "type": "object",
                                     "properties": {
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Logged out"
                                         },
-                                        "data": {}
+                                        "data": {
+                                            "type": "array",
+                                            "example": []
+                                        }
                                     }
                                 }
                             }
@@ -289,17 +215,157 @@
                 ]
             }
         },
+        "/api/v1/listing": {
+            "get": {
+                "tags": [
+                    "listing"
+                ],
+                "summary": "List",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resource received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Resource received"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Listing"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "listing"
+                ],
+                "summary": "Create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 191,
+                                        "description": "Listing title",
+                                        "example": "Selling a bicycle"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Listing description",
+                                        "example": "Excellent bicycle, almost new"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "minimum": 0,
+                                        "description": "Listing price",
+                                        "example": 120.50
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Seller's phone number",
+                                        "example": "+19995551234"
+                                    },
+                                    "has_whatsapp": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Availability on WhatsApp",
+                                        "example": 1
+                                    },
+                                    "has_telegram": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Availability on Telegram",
+                                        "example": 0
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Listing location latitude",
+                                        "example": "40.7128"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Listing location longitude",
+                                        "example": "-74.0060"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Saved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Saved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Listing"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                }
+            }
+        },
         "/api/v1/listing/{id}": {
             "get": {
                 "tags": [
                     "listing"
                 ],
-                "summary": "Get",
+                "summary": "Show",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Get listing by id",
+                        "description": "Get by id",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -331,67 +397,93 @@
                             }
                         }
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Not found"
-                                        },
-                                        "errors": {
-                                            "type": "null",
-                                            "example": null
-                                        }
+                        "$ref": "#/components/responses/RecordNotFoundError"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "listing"
+                ],
+                "summary": "Update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 191,
+                                        "description": "Listing title",
+                                        "example": "Selling a bicycle"
+                                    },
+                                    "description": {
+                                        "oneOf": [
+                                            { "type": "string" },
+                                            { "type": "string", "enum": [""] }
+                                        ],
+                                        "nullable": true,
+                                        "description": "Listing description",
+                                        "example": "Excellent bicycle, almost new"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "minimum": 0,
+                                        "description": "Listing price",
+                                        "example": 120.50
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Seller's phone number",
+                                        "example": "+19995551234"
+                                    },
+                                    "has_whatsapp": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Availability on WhatsApp",
+                                        "example": 1
+                                    },
+                                    "has_telegram": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Availability on Telegram",
+                                        "example": 0
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Listing location latitude",
+                                        "example": "40.7128"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Listing location longitude",
+                                        "example": "-74.0060"
                                     }
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/UnauthorizedError"
                     }
-                }
-            }
-        },
-        "/api/v1/listing": {
-            "post": {
-                "tags": [
-                    "listing"
-                ],
-                "summary": "Create",
-                "parameters": [
-                    {
-                        "name": "title",
-                        "in": "query",
-                        "description": "Title",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "Description",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "price",
-                        "in": "query",
-                        "description": "Price",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
-                    }
-                ],
+                },
                 "security": [
                     {
                         "bearerAuth": []
@@ -399,7 +491,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Saved successfully",
+                        "description": "Update successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -407,7 +499,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Saved successfully"
+                                            "example": "Update successfully"
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/Listing"
@@ -418,42 +510,54 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error",
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "listing"
+                ],
+                "summary": "Delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Delete by id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Delete successfully"
                                         },
-                                        "errors": {
-                                            "type": "object",
-                                            "properties": {
-                                                "name": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "email": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "password": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
+                                        "data": {
+                                            "type": "array",
+                                            "example": []
                                         }
                                     }
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RecordNotFoundError"
                     }
                 }
             }
@@ -500,8 +604,28 @@
                         "example": "This is the best house"
                     },
                     "price": {
-                        "type": "number",
-                        "example": "3500.00"
+                        "type": "string",
+                        "example": "85.50"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+996555123456"
+                    },
+                    "has_whatsapp": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "has_telegram": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "latitude": {
+                        "type": "string",
+                        "example": "42.647285"
+                    },
+                    "longitude": {
+                        "type": "string",
+                        "example": "77.096497"
                     },
                     "status": {
                         "type": "string",
@@ -563,6 +687,48 @@
                                 "message": {
                                     "type": "string",
                                     "example": "Unauthenticated."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RecordNotFoundError": {
+                "description": "Not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Record not found"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ValidationError": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "properties": {
+                                        "field": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

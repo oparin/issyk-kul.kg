@@ -289,6 +289,12 @@
                                         "description": "Listing price",
                                         "example": 120.50
                                     },
+                                    "price_type": {
+                                        "type": "string",
+                                        "enum": ["per_person", "per_apartment", null],
+                                        "description": "Type of pricing for the listing",
+                                        "example": "per_person"
+                                    },
                                     "phone": {
                                         "type": "string",
                                         "nullable": true,
@@ -449,6 +455,12 @@
                                         "description": "Listing price",
                                         "example": 120.50
                                     },
+                                    "price_type": {
+                                        "type": "string",
+                                        "enum": ["per_person", "per_apartment", null],
+                                        "description": "Type of pricing for the listing",
+                                        "example": "per_person"
+                                    },
                                     "phone": {
                                         "type": "string",
                                         "nullable": true,
@@ -606,6 +618,10 @@
                     "price": {
                         "type": "string",
                         "example": "85.50"
+                    },
+                    "price_type": {
+                        "type": "string",
+                        "example": "С человека"
                     },
                     "phone": {
                         "type": "string",

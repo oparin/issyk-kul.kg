@@ -2,7 +2,9 @@
 
 namespace App\Http\API\Requests\Listing;
 
+use App\Enums\PriceType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class CreateListingRequest extends FormRequest
 {
@@ -11,7 +13,8 @@ class CreateListingRequest extends FormRequest
         return [
             'title'        => ['required', 'string', 'max:191'],
             'description'  => ['required', 'string'],
-            'price'        => ['required', 'numeric', 'min:0'],
+            'price'        => ['required', 'numeric', 'min:0', 'max:9999999'],
+            'price_type'   => ['sometimes', 'nullable', new Enum(PriceType::class)],
             'phone'        => ['sometimes', 'string'],
             'has_whatsapp' => ['sometimes', 'boolean'],
             'has_telegram' => ['sometimes', 'boolean'],

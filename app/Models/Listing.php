@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PriceType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property double $price
+ * @property PriceType $price_type
  * @property string $phone
  * @property boolean $has_whatsapp
  * @property boolean $has_telegram
@@ -34,6 +36,7 @@ class Listing extends Model
         'title',
         'description',
         'price',
+        'price_type',
         'phone',
         'has_whatsapp',
         'has_telegram',
@@ -47,6 +50,7 @@ class Listing extends Model
     protected $casts = [
         'has_whatsapp' => 'boolean',
         'has_telegram' => 'boolean',
+        'price_type'   => PriceType::class,
     ];
 
     public function user(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Http\API\Resources;
 
+use App\Enums\PriceType;
 use App\Models\Listing;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,10 @@ class ListingResource extends JsonResource
             'id'           => $this->id,
             'title'        => $this->title,
             'description'  => $this->description,
-            'price'        => number_format($this->price, 2, '.', ''),
+            'price'        => $this->price
+                ? number_format($this->price, 2, '.', '')
+                : 'Договорная',
+            'price_type'   => $this->price_type?->label(),
             'phone'        => $this->phone,
             'has_whatsapp' => $this->has_whatsapp,
             'has_telegram' => $this->has_telegram,

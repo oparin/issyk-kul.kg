@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Currency;
 use App\Enums\PriceType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property double $price
+ * @property Currency $currency
  * @property PriceType $price_type
  * @property string $phone
  * @property boolean $has_whatsapp
@@ -36,6 +38,7 @@ class Listing extends Model
         'title',
         'description',
         'price',
+        'currency',
         'price_type',
         'phone',
         'has_whatsapp',
@@ -50,6 +53,7 @@ class Listing extends Model
     protected $casts = [
         'has_whatsapp' => 'boolean',
         'has_telegram' => 'boolean',
+        'currency'     => Currency::class,
         'price_type'   => PriceType::class,
     ];
 

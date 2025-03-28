@@ -20,7 +20,8 @@ class ListingResource extends JsonResource
             'price'        => $this->price
                 ? number_format($this->price, 2, '.', '')
                 : 'Договорная',
-            'price_type'   => $this->price_type?->label(),
+            'currency'     => $this->currency?->alias(),
+            'price_type'   => $this->price_type?->alias(),
             'phone'        => $this->phone,
             'has_whatsapp' => $this->has_whatsapp,
             'has_telegram' => $this->has_telegram,

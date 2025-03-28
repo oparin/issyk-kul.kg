@@ -289,6 +289,12 @@
                                         "description": "Listing price",
                                         "example": 120.50
                                     },
+                                    "currency": {
+                                        "type": "string",
+                                        "enum": ["usd", "kgs", null],
+                                        "description": "Type of currency for the listing",
+                                        "example": "kgs"
+                                    },
                                     "price_type": {
                                         "type": "string",
                                         "enum": ["per_person", "per_apartment", null],
@@ -454,6 +460,12 @@
                                         "minimum": 0,
                                         "description": "Listing price",
                                         "example": 120.50
+                                    },
+                                    "currency": {
+                                        "type": "string",
+                                        "enum": ["usd", "kgs", null],
+                                        "description": "Type of currency for the listing",
+                                        "example": "kgs"
                                     },
                                     "price_type": {
                                         "type": "string",

@@ -75,6 +75,15 @@ services:
         networks:
             - app-network
 
+    mailhog:
+        image: mailhog/mailhog
+        container_name: ik_mailhog
+        ports:
+            - "1026:1025"
+            - "8026:8025"
+        networks:
+            - app-network
+
 networks:
     app-network:
         driver: bridge

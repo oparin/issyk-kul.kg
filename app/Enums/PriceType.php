@@ -7,7 +7,7 @@ enum PriceType: string
     case PER_PERSON    = 'per_person';
     case PER_APARTMENT = 'per_apartment';
 
-    public function label(): string
+    public function alias(): string
     {
         return match ($this) {
             self::PER_PERSON    => 'С человека',

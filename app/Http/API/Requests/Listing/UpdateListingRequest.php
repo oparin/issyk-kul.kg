@@ -2,6 +2,7 @@
 
 namespace App\Http\API\Requests\Listing;
 
+use App\Enums\Currency;
 use App\Enums\PriceType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
@@ -14,6 +15,7 @@ class UpdateListingRequest extends FormRequest
             'title'        => ['sometimes', 'string', 'max:191'],
             'description'  => ['sometimes', 'string'],
             'price'        => ['sometimes', 'numeric', 'min:0', 'max:9999999'],
+            'currency'     => ['sometimes', new Enum(Currency::class)],
             'price_type'   => ['sometimes', new Enum(PriceType::class)],
             'phone'        => ['sometimes', 'string'],
             'has_whatsapp' => ['sometimes', 'boolean'],

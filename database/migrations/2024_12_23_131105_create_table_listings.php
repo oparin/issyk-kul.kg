@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description')->nullable();
             $table->double('price')->nullable();
+            $table->string('currency')->nullable();
             $table->string('price_type')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('has_whatsapp')->default(false);

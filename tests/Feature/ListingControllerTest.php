@@ -27,9 +27,6 @@ class ListingControllerTest extends TestCase
         $this->listingController = new ListingController($this->listingService);
     }
 
-    /**
-     * @test
-     */
     public function test_index_returns_all_listings()
     {
         $user = User::factory()->create();
@@ -47,9 +44,6 @@ class ListingControllerTest extends TestCase
         $response->assertJsonCount(5, 'data');
     }
 
-    /**
-     * @test
-     */
     public function test_store_creates_new_listing()
     {
         $user = User::factory()->create();
@@ -76,9 +70,6 @@ class ListingControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
     public function test_show_returns_single_listing()
     {
         $user = User::factory()->create();
@@ -101,9 +92,6 @@ class ListingControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
     public function test_update_updates_existing_listing()
     {
         $user = User::factory()->create();

@@ -4,13 +4,14 @@ namespace App\Http\API\Controllers;
 
 use App\Http\API\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends BaseController
 {
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|max:191',
@@ -33,7 +34,7 @@ class AuthController extends BaseController
         return $this->sendSuccess('Registration was successful', UserResource::make($user));
     }
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email|exists:users,email',
@@ -57,7 +58,8 @@ class AuthController extends BaseController
         return $this->sendSuccess('Login successfully', ['token' => $authToken]);
     }
 
-    public function logout(){
+    public function logout(): JsonResponse
+    {
         auth()->user()->tokens()->delete();
 
         return $this->sendSuccess('Logged out');

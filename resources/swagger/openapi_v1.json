@@ -65,7 +65,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login successfully",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -137,7 +137,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Registration was successful",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -185,7 +185,7 @@
                 "summary": "Logout",
                 "responses": {
                     "200": {
-                        "description": "Logged out",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -205,7 +205,7 @@
                         }
                     },
                     "401": {
-                        "$ref": "#/components/responses/UnauthorizedError"
+                        "$ref": "#/components/responses/401"
                     }
                 },
                 "security": [
@@ -215,12 +215,12 @@
                 ]
             }
         },
-        "/api/v1/listing": {
+        "/api/v1/cities": {
             "get": {
                 "tags": [
-                    "listing"
+                    "cities"
                 ],
-                "summary": "List",
+                "summary": "Get all cities",
                 "security": [
                     {
                         "bearerAuth": []
@@ -228,7 +228,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Resource received",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -236,7 +236,47 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Resource received"
+                                            "example": "Cities retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/City"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/api/v1/listings": {
+            "get": {
+                "tags": [
+                    "listing"
+                ],
+                "summary": "Get all listings",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get all listings",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Listings retrieved successfully"
                                         },
                                         "data": {
                                             "type": "array",
@@ -250,7 +290,7 @@
                         }
                     },
                     "401": {
-                        "$ref": "#/components/responses/UnauthorizedError"
+                        "$ref": "#/components/responses/401"
                     }
                 }
             },
@@ -258,7 +298,7 @@
                 "tags": [
                     "listing"
                 ],
-                "summary": "Create",
+                "summary": "Create a listing",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -343,7 +383,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Saved successfully",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -351,7 +391,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Saved successfully"
+                                            "example": "Listing created successfully"
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/Listing"
@@ -363,16 +403,19 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/ValidationError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
                     }
                 }
             }
         },
-        "/api/v1/listing/{id}": {
+        "/api/v1/listings/{id}": {
             "get": {
                 "tags": [
                     "listing"
                 ],
-                "summary": "Show",
+                "summary": "Show a listing",
                 "parameters": [
                     {
                         "name": "id",
@@ -391,7 +434,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Resource received",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -399,7 +442,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Resource received"
+                                            "example": "Listing retrieved successfully"
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/Listing"
@@ -410,10 +453,10 @@
                         }
                     },
                     "401": {
-                        "$ref": "#/components/responses/UnauthorizedError"
+                        "$ref": "#/components/responses/401"
                     },
                     "404": {
-                        "$ref": "#/components/responses/RecordNotFoundError"
+                        "$ref": "#/components/responses/404"
                     }
                 }
             },
@@ -421,7 +464,7 @@
                 "tags": [
                     "listing"
                 ],
-                "summary": "Update",
+                "summary": "Update a listing",
                 "parameters": [
                     {
                         "name": "id",
@@ -515,7 +558,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Update successfully",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -523,7 +566,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Update successfully"
+                                            "example": "Listing updated successfully"
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/Listing"
@@ -532,6 +575,12 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
                     },
                     "422": {
                         "$ref": "#/components/responses/ValidationError"
@@ -542,7 +591,7 @@
                 "tags": [
                     "listing"
                 ],
-                "summary": "Delete",
+                "summary": "Delete a listing",
                 "parameters": [
                     {
                         "name": "id",
@@ -561,7 +610,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Delete successfully",
+                        "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -569,19 +618,21 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Delete successfully"
+                                            "example": "Listing deleted successfully"
                                         },
                                         "data": {
-                                            "type": "array",
-                                            "example": []
+                                            "$ref": "#/components/schemas/Listing"
                                         }
                                     }
                                 }
                             }
                         }
                     },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
                     "404": {
-                        "$ref": "#/components/responses/RecordNotFoundError"
+                        "$ref": "#/components/responses/404"
                     }
                 }
             }
@@ -605,6 +656,23 @@
                         "type": "string",
                         "format": "email",
                         "example": "oparin85@gmail.com"
+                    }
+                },
+                "xml": {
+                    "name": "order"
+                }
+            },
+            "City": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 4
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Каракол"
                     }
                 },
                 "xml": {
@@ -705,8 +773,8 @@
             }
         },
         "responses": {
-            "UnauthorizedError": {
-                "description": "Not authorized",
+            "401": {
+                "description": "Unauthorized - Missing or invalid token",
                 "content": {
                     "application/json": {
                         "schema": {
@@ -721,7 +789,7 @@
                     }
                 }
             },
-            "RecordNotFoundError": {
+            "404": {
                 "description": "Not found",
                 "content": {
                     "application/json": {

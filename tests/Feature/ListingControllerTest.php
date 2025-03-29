@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Http\API\Controllers\ListingController;
-use App\Http\API\Services\ListingService;
 use App\Models\Listing;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,17 +14,6 @@ class ListingControllerTest extends TestCase
 
     protected const ROUTE_PREFIX = 'api.v1.';
 
-    private ListingController $listingController;
-    private ListingService    $listingService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->listingService    = new ListingService();
-        $this->listingController = new ListingController($this->listingService);
-    }
-
     public function test_index_returns_all_listings()
     {
         $user = User::factory()->create();
@@ -35,7 +22,7 @@ class ListingControllerTest extends TestCase
         Listing::factory()->count(5)->create();
 
         // Call the index method
-        $response = $this->actingAs($user)->getJson(route(self::ROUTE_PREFIX . 'listing.index'));
+        $response = $this->actingAs($user)->get(route(self::ROUTE_PREFIX . 'listings.index'));
 
         // Assert the response is successful
         $response->assertSuccessful();
@@ -57,7 +44,7 @@ class ListingControllerTest extends TestCase
         // Call the store method
         $response = $this->actingAs($user)
             ->withHeaders(['Accept' => 'application/json'])
-            ->post(route(self::ROUTE_PREFIX . 'listing.store'), $data);
+            ->post(route(self::ROUTE_PREFIX . 'listings.store'), $data);
 
         // Assert the response is successful
         $response->assertSuccessful();
@@ -78,7 +65,7 @@ class ListingControllerTest extends TestCase
         $listing = Listing::factory()->create();
 
         // Call the show method
-        $response = $this->actingAs($user)->getJson(route(self::ROUTE_PREFIX . 'listing.show', $listing->id));
+        $response = $this->actingAs($user)->getJson(route(self::ROUTE_PREFIX . 'listings.show', $listing->id));
 
         // Assert the response is successful
         $response->assertSuccessful();
@@ -107,7 +94,7 @@ class ListingControllerTest extends TestCase
         ];
 
         // Call the update method
-        $response = $this->actingAs($user)->put(route(self::ROUTE_PREFIX . 'listing.update', $listing->id), $data);
+        $response = $this->actingAs($user)->put(route(self::ROUTE_PREFIX . 'listings.update', $listing->id), $data);
 
         // Assert the response is successful
         $response->assertSuccessful();
@@ -128,7 +115,7 @@ class ListingControllerTest extends TestCase
         $listing = Listing::factory()->create();
 
         // Call the destroy method
-        $response = $this->actingAs($user)->delete(route(self::ROUTE_PREFIX . 'listing.destroy', $listing->id));
+        $response = $this->actingAs($user)->delete(route(self::ROUTE_PREFIX . 'listings.destroy', $listing->id));
 
         // Assert the response is successful
         $response->assertSuccessful();

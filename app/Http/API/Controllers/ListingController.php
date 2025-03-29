@@ -11,18 +11,13 @@ use Illuminate\Http\JsonResponse;
 
 class ListingController extends BaseController
 {
-    private ListingService $listingService;
-
-    public function __construct(ListingService $listingService)
-    {
-        $this->listingService = $listingService;
-    }
+    public function __construct(private readonly ListingService $listingService) {}
 
     public function index(): JsonResponse
     {
-        $listing = Listing::all();
+        $listing = Listing::paginate();
 
-        return $this->sendSuccess('Resource received', ListingResource::collection($listing));
+        return $this->sendSuccess('Listings retrieved successfully', ListingResource::collection($listing));
     }
 
     public function store(CreateListingRequest $request): JsonResponse
@@ -31,14 +26,14 @@ class ListingController extends BaseController
 
         $listing = $this->listingService->createListing($data);
 
-        return $this->sendSuccess('Saved successfully', ListingResource::make($listing));
+        return $this->sendSuccess('Listing created successfully', ListingResource::make($listing));
     }
 
     public function show(Listing $listing): JsonResponse
     {
         $listing->increment('views');
 
-        return $this->sendSuccess('Resource received', ListingResource::make($listing));
+        return $this->sendSuccess('Listing retrieved successfully', ListingResource::make($listing));
     }
 
     public function update(UpdateListingRequest $request, Listing $listing): JsonResponse
@@ -47,13 +42,15 @@ class ListingController extends BaseController
 
         $listing = $this->listingService->updateListing($listing, $data);
 
-        return $this->sendSuccess('Update successfully', ListingResource::make($listing));
+        return $this->sendSuccess('Listing updated successfully', ListingResource::make($listing));
     }
 
     public function destroy(Listing $listing): JsonResponse
     {
-        $listing->delete();
+        if (!$listing->delete()) {
+            return $this->sendError('Failed to delete the listing', 500);
+        }
 
-        return $this->sendSuccess('Delete successfully');
+        return $this->sendSuccess('Listing deleted successfully', ListingResource::make($listing));
     }
 }

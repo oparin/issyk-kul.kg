@@ -18,6 +18,9 @@ return new class extends Migration {
             $table->double('price')->nullable();
             $table->string('currency')->nullable();
             $table->string('price_type')->nullable();
+            $table->foreignId('city_id')->nullable()->constrained('cities')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
             $table->string('phone')->nullable();
             $table->boolean('has_whatsapp')->default(false);
             $table->boolean('has_telegram')->default(false);

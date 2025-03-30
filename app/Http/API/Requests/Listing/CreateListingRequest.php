@@ -13,15 +13,16 @@ class CreateListingRequest extends FormRequest
     {
         return [
             'title'        => ['required', 'string', 'max:191'],
-            'description'  => ['required', 'string'],
-            'price'        => ['required', 'numeric', 'min:0', 'max:9999999'],
+            'description'  => ['sometimes', 'nullable', 'string'],
+            'price'        => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:9999999'],
             'currency'     => ['sometimes', 'nullable', new Enum(Currency::class)],
             'price_type'   => ['sometimes', 'nullable', new Enum(PriceType::class)],
-            'phone'        => ['sometimes', 'string'],
-            'has_whatsapp' => ['sometimes', 'boolean'],
-            'has_telegram' => ['sometimes', 'boolean'],
-            'latitude'     => ['sometimes', 'string'],
-            'longitude'    => ['sometimes', 'string'],
+            'city_id'      => ['sometimes', 'nullable', 'exists:cities,id'],
+            'phone'        => ['sometimes', 'nullable', 'string'],
+            'has_whatsapp' => ['sometimes', 'nullable', 'boolean'],
+            'has_telegram' => ['sometimes', 'nullable', 'boolean'],
+            'latitude'     => ['sometimes', 'nullable', 'numeric', 'min:-90', 'max:90'],
+            'longitude'    => ['sometimes', 'nullable', 'numeric', 'min:-180', 'max:180'],
         ];
     }
 

@@ -306,9 +306,7 @@
                             "schema": {
                                 "type": "object",
                                 "required": [
-                                    "title",
-                                    "description",
-                                    "price"
+                                    "title"
                                 ],
                                 "properties": {
                                     "title": {
@@ -340,6 +338,11 @@
                                         "enum": ["per_person", "per_apartment", null],
                                         "description": "Type of pricing for the listing",
                                         "example": "per_person"
+                                    },
+                                    "city_id": {
+                                        "type": "integer",
+                                        "description": "City ID for the listing",
+                                        "example": 3
                                     },
                                     "phone": {
                                         "type": "string",
@@ -515,6 +518,11 @@
                                         "enum": ["per_person", "per_apartment", null],
                                         "description": "Type of pricing for the listing",
                                         "example": "per_person"
+                                    },
+                                    "city_id": {
+                                        "type": "integer",
+                                        "description": "City ID for the listing",
+                                        "example": 3
                                     },
                                     "phone": {
                                         "type": "string",
@@ -702,6 +710,9 @@
                     "price_type": {
                         "type": "string",
                         "example": "С человека"
+                    },
+                    "city": {
+                        "$ref": "#/components/schemas/City"
                     },
                     "phone": {
                         "type": "string",

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property double $price
  * @property Currency $currency
  * @property PriceType $price_type
+ * @property integer $city_id
  * @property string $phone
  * @property boolean $has_whatsapp
  * @property boolean $has_telegram
@@ -24,6 +25,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $status
  * @property string $expires_at
  * @property int $views
+ *
+ * @property User $user
+ * @property City $city
  *
  * @method void increment(string $column, int $amount = 1, array $extra = [])
  */
@@ -40,6 +44,7 @@ class Listing extends Model
         'price',
         'currency',
         'price_type',
+        'city_id',
         'phone',
         'has_whatsapp',
         'has_telegram',
@@ -60,5 +65,10 @@ class Listing extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }

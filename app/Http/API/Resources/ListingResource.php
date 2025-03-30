@@ -22,6 +22,7 @@ class ListingResource extends JsonResource
                 : 'Договорная',
             'currency'     => $this->currency?->alias(),
             'price_type'   => $this->price_type?->alias(),
+            'city'         => CityResource::make($this->city),
             'phone'        => $this->phone,
             'has_whatsapp' => $this->has_whatsapp,
             'has_telegram' => $this->has_telegram,

@@ -15,9 +15,9 @@ class ListingController extends BaseController
 
     public function index(): JsonResponse
     {
-        $listing = Listing::paginate();
+        $listings = $this->listingService->getPaginatedListings();
 
-        return $this->sendSuccess('Listings retrieved successfully', ListingResource::collection($listing));
+        return $this->responsePaginated('Listings retrieved successfully', ListingResource::collection($listings));
     }
 
     public function store(CreateListingRequest $request): JsonResponse
@@ -47,7 +47,7 @@ class ListingController extends BaseController
 
     public function destroy(Listing $listing): JsonResponse
     {
-        if (!$listing->delete()) {
+        if (!$this->listingService->deleteListing($listing)) {
             return $this->sendError('Failed to delete the listing', 500);
         }
 

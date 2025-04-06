@@ -26,12 +26,14 @@ class BaseController extends Controller
         }
 
         return response()->json([
-            'message'     => $message,
-            'data'        => $paginator->items(),
-            'per_page'    => $paginator->perPage(),
-            'page'        => $paginator->currentPage(),
-            'total_page'  => $paginator->lastPage(),
-            'total_items' => $paginator->total(),
+            'message'    => $message,
+            'data'       => $paginator->items(),
+            'pagination' => [
+                'per_page'    => $paginator->perPage(),
+                'page'        => $paginator->currentPage(),
+                'total_page'  => $paginator->lastPage(),
+                'total_items' => $paginator->total(),
+            ]
         ], 200);
     }
 

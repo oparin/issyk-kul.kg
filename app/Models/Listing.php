@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property User $user
  * @property City $city
+ * @property Resort $resort
  *
  * @method void increment(string $column, int $amount = 1, array $extra = [])
  */
@@ -45,6 +46,7 @@ class Listing extends Model
         'currency',
         'price_type',
         'city_id',
+        'resort_id',
         'phone',
         'has_whatsapp',
         'has_telegram',
@@ -70,5 +72,10 @@ class Listing extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function resort(): BelongsTo
+    {
+        return $this->belongsTo(Resort::class);
     }
 }

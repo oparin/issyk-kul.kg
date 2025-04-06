@@ -21,6 +21,9 @@ return new class extends Migration {
             $table->foreignId('city_id')->nullable()->constrained('cities')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
+            $table->foreignId('resort_id')->nullable()->constrained('resorts')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
             $table->string('phone')->nullable();
             $table->boolean('has_whatsapp')->default(false);
             $table->boolean('has_telegram')->default(false);

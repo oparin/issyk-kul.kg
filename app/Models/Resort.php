@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property Listing[] $listings
  */
-class City extends Model
+class Resort extends Model
 {
     use HasFactory, SoftDeletes;
 

@@ -25,11 +25,19 @@
     "tags": [
         {
             "name": "auth",
-            "description": "User authorization"
+            "description": "User authentication and authorization"
+        },
+        {
+            "name": "city",
+            "description": "City management"
+        },
+        {
+            "name": "resort",
+            "description": "Resort management"
         },
         {
             "name": "listing",
-            "description": "Listing manage"
+            "description": "Listing management"
         }
     ],
     "paths": {
@@ -218,7 +226,7 @@
         "/api/v1/cities": {
             "get": {
                 "tags": [
-                    "cities"
+                    "city"
                 ],
                 "summary": "Get all cities",
                 "security": [
@@ -242,6 +250,46 @@
                                             "type": "array",
                                             "items": {
                                                 "$ref": "#/components/schemas/City"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/api/v1/resorts": {
+            "get": {
+                "tags": [
+                    "resort"
+                ],
+                "summary": "Get all resorts",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Resorts retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Resort"
                                             }
                                         }
                                     }
@@ -283,6 +331,9 @@
                                             "items": {
                                                 "$ref": "#/components/schemas/Listing"
                                             }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
                                         }
                                     }
                                 }
@@ -342,6 +393,11 @@
                                     "city_id": {
                                         "type": "integer",
                                         "description": "City ID for the listing",
+                                        "example": 3
+                                    },
+                                    "resort_id": {
+                                        "type": "integer",
+                                        "description": "Resort ID for the listing",
                                         "example": 3
                                     },
                                     "phone": {
@@ -687,6 +743,23 @@
                     "name": "order"
                 }
             },
+            "Resort": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Asia Palace"
+                    }
+                },
+                "xml": {
+                    "name": "order"
+                }
+            },
             "Listing": {
                 "type": "object",
                 "properties": {
@@ -713,6 +786,9 @@
                     },
                     "city": {
                         "$ref": "#/components/schemas/City"
+                    },
+                    "resort": {
+                        "$ref": "#/components/schemas/Resort"
                     },
                     "phone": {
                         "type": "string",
@@ -772,6 +848,27 @@
                     },
                     "errors": {
                         "type": "object"
+                    }
+                }
+            },
+            "Pagination": {
+                "type": "object",
+                "properties": {
+                    "per_page": {
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "total_page": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "total_items": {
+                        "type": "integer",
+                        "example": 150
                     }
                 }
             }

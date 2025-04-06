@@ -18,6 +18,7 @@ class CreateListingRequest extends FormRequest
             'currency'     => ['sometimes', 'nullable', new Enum(Currency::class)],
             'price_type'   => ['sometimes', 'nullable', new Enum(PriceType::class)],
             'city_id'      => ['sometimes', 'nullable', 'exists:cities,id'],
+            'resort_id'    => ['sometimes', 'nullable', 'exists:resorts,id'],
             'phone'        => ['sometimes', 'nullable', 'string'],
             'has_whatsapp' => ['sometimes', 'nullable', 'boolean'],
             'has_telegram' => ['sometimes', 'nullable', 'boolean'],
